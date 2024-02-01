@@ -4,13 +4,16 @@ import (
 	"fmt"
 	"strings"
 
+	"discord-bot/internal"
+
 	"github.com/bwmarrin/discordgo"
 )
 
 func PollServive(s *discordgo.Session, m *discordgo.MessageCreate) {
-	scratch := strings.Split(m.Content, "|")
+	scratch := strings.Split(m.Content, internal.Divider)
 
 	poll := make([]string, 0)
+
 	for _, ch := range scratch {
 		if strings.TrimSpace(ch) != "" {
 			poll = append(poll, ch)
@@ -20,37 +23,43 @@ func PollServive(s *discordgo.Session, m *discordgo.MessageCreate) {
 	if len(poll) > 2 && len(poll) <= 16 {
 		// Creation poll with multiple options
 		question := poll[1]
+
 		options := poll[2:]
+
 		pollMessage := multipleQuestionPoll(question, options)
+
 		s.ChannelMessageSend(m.ChannelID, pollMessage)
-		return
+
 	} else if len(poll) == 2 {
 		// When i get only question,that will mean the question is simple, which contain only two option YES/NO
+
 		pollMessage := simpleQuestionPoll(poll[1])
+
 		s.ChannelMessageSend(m.ChannelID, pollMessage)
-		return
+
 	} else {
 		// If non of this example above
-		s.ChannelMessageSend(m.ChannelID, "Usage: \n **If you wanna create poll with multiple choise:**\n!poll | <question> | <option1> |  <option2> ... \n**If you wanna create poll with options YES/NO:**\n!poll | <question>")
-		return
+
+		s.ChannelMessageSend(m.ChannelID, internal.PollHelperText)
 	}
 }
 
 func simpleQuestionPoll(question string) string {
-	pollMessage := fmt.Sprintf("**Poll:** %s\n\n", question)
+	pollMessage := fmt.Sprintf(internal.PollResultHeader, question)
 
-	pollMessage += fmt.Sprintf(":white_check_mark: %s\n", "Yes")
-	pollMessage += fmt.Sprintf(":x: %s\n", "No")
+	pollMessage += fmt.Sprintf(internal.EmojiCheck, internal.TextYes)
+
+	pollMessage += fmt.Sprintf(internal.EmojyX, internal.TextYes)
+
 	return pollMessage
 }
 
 func multipleQuestionPoll(question string, options []string) string {
-	fmt.Println(question, options)
-	pollMessage := fmt.Sprintf("**Poll:** %s\n\n", question)
+	pollMessage := fmt.Sprintf(internal.PollResultHeader, question)
 
 	for i, option := range options {
 		if strings.TrimSpace(option) != "" {
-			pollMessage += fmt.Sprintf(":regional_indicator_%s: %s\n", string('a'+i), option)
+			pollMessage += fmt.Sprintf(internal.EmojiLetter, string('a'+i), option)
 		}
 	}
 
