@@ -23,5 +23,7 @@ func Router(s *discordgo.Session, m *discordgo.MessageCreate) {
 		services.WeatherCheck(s, m)
 	case strings.Contains(m.Content, "!reminder"):
 		services.Reminder(s, m)
+	case strings.Contains(m.Content, "!play"):
+		services.Game(s, m)
 	}
 }
