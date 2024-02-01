@@ -9,7 +9,7 @@ import (
 	"github.com/bwmarrin/discordgo"
 )
 
-func PollServive(s *discordgo.Session, m *discordgo.MessageCreate) {
+func PollService(s *discordgo.Session, m *discordgo.MessageCreate) {
 	scratch := strings.Split(m.Content, internal.Divider)
 
 	poll := make([]string, 0)
@@ -21,7 +21,7 @@ func PollServive(s *discordgo.Session, m *discordgo.MessageCreate) {
 	}
 
 	if len(poll) > 2 && len(poll) <= 16 {
-		
+
 		question := poll[1]
 
 		options := poll[2:]
