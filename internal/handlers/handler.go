@@ -21,5 +21,7 @@ func Router(s *discordgo.Session, m *discordgo.MessageCreate) {
 		services.PollServive(s, m)
 	case strings.Contains(m.Content, "!weather"):
 		services.WeatherCheck(s, m)
+	case strings.Contains(m.Content, "!reminder"):
+		services.Reminder(s, m)
 	}
 }

@@ -21,7 +21,7 @@ func PollServive(s *discordgo.Session, m *discordgo.MessageCreate) {
 	}
 
 	if len(poll) > 2 && len(poll) <= 16 {
-		// Creation poll with multiple options
+		
 		question := poll[1]
 
 		options := poll[2:]

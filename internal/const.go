@@ -15,4 +15,8 @@ const (
 	WeatherInformationLink = "https://api.openweathermap.org/data/2.5/weather?lat=%f&lon=%f&appid=%s&units=metric"
 	HelpFunctionText       = "**Available command:**\n!help-to see all available commands \n!poll-to create poll"
 	WeatherErrorText       = "You can find out  result of specifiy city with command:\n!weather | <city name> "
+	ReminderHelperText     = "To set reminders you should run the command:\n**!reminder | time (0h0m0s) | Text for description**"
+	WrongTimeFormat        = "Wrong time format"
+	AlertTimeSetText       = "Time was set, and will reminde you in %s"
+	ReminderText           = " **TIME UP** <@%s>, \nDescription:%s "
 )
