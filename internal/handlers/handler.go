@@ -11,6 +11,7 @@ import (
 
 var mu sync.Mutex
 
+// function to call services asynchronously
 func callServiceAsync(s *discordgo.Session, m *discordgo.MessageCreate, service func(*discordgo.Session, *discordgo.MessageCreate)) {
 	go func() {
 		mu.Lock()
@@ -19,11 +20,14 @@ func callServiceAsync(s *discordgo.Session, m *discordgo.MessageCreate, service 
 	}()
 }
 
+// Main routing function to determine which service to call
 func Router(s *discordgo.Session, m *discordgo.MessageCreate) {
+	// Ignore messages from the bot itself
 	if m.Author.ID == s.State.User.ID {
 		return
 	}
 
+	// variation of services
 	switch {
 	case strings.Contains(m.Content, "!help"):
 		callServiceAsync(s, m, services.Helper)
@@ -35,5 +39,6 @@ func Router(s *discordgo.Session, m *discordgo.MessageCreate) {
 		callServiceAsync(s, m, services.Reminder)
 	case strings.Contains(m.Content, "!play"):
 		callServiceAsync(s, m, services.Game)
+
 	}
 }

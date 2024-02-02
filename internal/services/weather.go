@@ -39,24 +39,24 @@ func WeatherCheck(s *discordgo.Session, m *discordgo.MessageCreate) {
 	return
 }
 
+// Calling geocode api to get coordinate of place
 func getCoordinate(cityName string) []internal.Coordinate {
 	godotenv.Load()
 	ApiKey := os.Getenv("WEATHER_API_KEY")
 	data, err := http.Get(fmt.Sprintf(internal.GeocodeLink, cityName, ApiKey))
 	if err != nil {
-		fmt.Println("ERROR1:", err)
 		log.Fatal(err)
 	}
 
 	var coordinate []internal.Coordinate
 	err = json.NewDecoder(data.Body).Decode(&coordinate)
 	if err != nil {
-		fmt.Println("ERROR2:", err)
 		log.Fatal(err)
 	}
 	return coordinate
 }
 
+// function to get weather information  from specific coordinates
 func getWeatherData(coordinate []internal.Coordinate) internal.Weather {
 	godotenv.Load()
 
@@ -70,7 +70,6 @@ func getWeatherData(coordinate []internal.Coordinate) internal.Weather {
 	err = json.NewDecoder(weatherData.Body).Decode(&weather)
 
 	if err != nil {
-		fmt.Println("Err3", err)
 		log.Fatal(err)
 	}
 	return weather

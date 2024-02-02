@@ -12,21 +12,25 @@ import (
 
 func Game(s *discordgo.Session, m *discordgo.MessageCreate) {
 	text := strings.Split(m.Content, internal.Divider)
-	fmt.Println(text)
+
 	if len(text) != 2 {
 		s.ChannelMessageSend(m.ChannelID, internal.SRPHelperText)
 		return
 	}
 
+	// map to track user answer
 	SRP := []string{"scissor", "paper", "rock"}
 	mp := map[string]bool{}
 	for _, ch := range SRP {
 		mp[ch] = true
 	}
+
+	// to generate randome number
 	randNum := rand.Intn(len(SRP))
 
 	AIresult := SRP[randNum]
 
+	// if user didn't provide option
 	if !mp[strings.TrimSpace(text[1])] {
 		s.ChannelMessageSendReply(m.ChannelID, internal.SRPHelperText, m.Reference())
 		return
@@ -34,6 +38,7 @@ func Game(s *discordgo.Session, m *discordgo.MessageCreate) {
 
 	result := SRPGame(AIresult, strings.TrimSpace(text[1]))
 
+	// send result based on result
 	switch result {
 	case 1:
 		s.ChannelMessageSendReply(m.ChannelID, fmt.Sprintf(internal.ResultMessage, "Win", strings.TrimSpace(text[1]), AIresult, internal.YouWonText), m.Reference())
@@ -47,6 +52,7 @@ func Game(s *discordgo.Session, m *discordgo.MessageCreate) {
 	}
 }
 
+// function to compare user answer with ai answer
 func SRPGame(ai, human string) int {
 	if ai == "scissor" && human == "paper" {
 		return -1

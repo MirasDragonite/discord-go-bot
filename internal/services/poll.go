@@ -21,7 +21,7 @@ func PollService(s *discordgo.Session, m *discordgo.MessageCreate) {
 	}
 
 	if len(poll) > 2 && len(poll) <= 16 {
-
+		// Taking question and options for multiple choise poll
 		question := poll[1]
 
 		options := poll[2:]
@@ -44,6 +44,7 @@ func PollService(s *discordgo.Session, m *discordgo.MessageCreate) {
 	}
 }
 
+// function to create simple question poll
 func simpleQuestionPoll(question string) string {
 	pollMessage := fmt.Sprintf(internal.PollResultHeader, question)
 
@@ -54,6 +55,7 @@ func simpleQuestionPoll(question string) string {
 	return pollMessage
 }
 
+// funcation to create multiple choise poll
 func multipleQuestionPoll(question string, options []string) string {
 	pollMessage := fmt.Sprintf(internal.PollResultHeader, question)
 
