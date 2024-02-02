@@ -28,7 +28,7 @@ func Game(s *discordgo.Session, m *discordgo.MessageCreate) {
 	AIresult := SRP[randNum]
 
 	if !mp[strings.TrimSpace(text[1])] {
-		s.ChannelMessageSend(m.ChannelID, internal.SRPHelperText)
+		s.ChannelMessageSendReply(m.ChannelID, internal.SRPHelperText, m.Reference())
 		return
 	}
 
@@ -36,13 +36,13 @@ func Game(s *discordgo.Session, m *discordgo.MessageCreate) {
 
 	switch result {
 	case 1:
-		s.ChannelMessageSend(m.ChannelID, fmt.Sprintf(internal.ResultMessage, "Win", strings.TrimSpace(text[1]), AIresult, internal.YouWonText))
+		s.ChannelMessageSendReply(m.ChannelID, fmt.Sprintf(internal.ResultMessage, "Win", strings.TrimSpace(text[1]), AIresult, internal.YouWonText), m.Reference())
 		return
 	case -1:
-		s.ChannelMessageSend(m.ChannelID, fmt.Sprintf(internal.ResultMessage, "Lose", strings.TrimSpace(text[1]), AIresult, internal.YouLoseText))
+		s.ChannelMessageSendReply(m.ChannelID, fmt.Sprintf(internal.ResultMessage, "Lose", strings.TrimSpace(text[1]), AIresult, internal.YouLoseText), m.Reference())
 		return
 	case 0:
-		s.ChannelMessageSend(m.ChannelID, fmt.Sprintf(internal.ResultMessage, "Draw", strings.TrimSpace(text[1]), AIresult, internal.DrawText))
+		s.ChannelMessageSendReply(m.ChannelID, fmt.Sprintf(internal.ResultMessage, "Draw", strings.TrimSpace(text[1]), AIresult, internal.DrawText), m.Reference())
 		return
 	}
 }

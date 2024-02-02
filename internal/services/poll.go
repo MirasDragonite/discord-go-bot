@@ -40,7 +40,7 @@ func PollService(s *discordgo.Session, m *discordgo.MessageCreate) {
 	} else {
 		// If non of this example above
 
-		s.ChannelMessageSend(m.ChannelID, internal.PollHelperText)
+		s.ChannelMessageSendReply(m.ChannelID, internal.PollHelperText, m.Reference())
 	}
 }
 

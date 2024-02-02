@@ -18,7 +18,7 @@ func WeatherCheck(s *discordgo.Session, m *discordgo.MessageCreate) {
 	text := strings.Split(m.Content, "|")
 
 	if len(text) != 2 {
-		s.ChannelMessageSend(m.ChannelID, internal.WeatherErrorText)
+		s.ChannelMessageSendReply(m.ChannelID, internal.WeatherErrorText, m.Reference())
 		return
 	}
 
@@ -26,7 +26,7 @@ func WeatherCheck(s *discordgo.Session, m *discordgo.MessageCreate) {
 
 	if len(coordinate) > 0 {
 	} else {
-		s.ChannelMessageSend(m.ChannelID, internal.CantFindCityText)
+		s.ChannelMessageSendReply(m.ChannelID, internal.CantFindCityText, m.Reference())
 		return
 	}
 
@@ -34,7 +34,7 @@ func WeatherCheck(s *discordgo.Session, m *discordgo.MessageCreate) {
 
 	result := fmt.Sprintf(internal.WeatherResultText, coordinate[0].Name, weather.Weth[0].Descriotion, weather.Main.Temp, weather.Main.Feels)
 
-	s.ChannelMessageSend(m.ChannelID, result)
+	s.ChannelMessageSendReply(m.ChannelID, result, m.Reference())
 
 	return
 }

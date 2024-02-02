@@ -14,24 +14,24 @@ func Reminder(s *discordgo.Session, m *discordgo.MessageCreate) {
 	dates := strings.Split(m.Content, internal.Divider)
 
 	if len(dates) != 3 {
-		s.ChannelMessageSend(m.ChannelID, internal.ReminderHelperText)
+		s.ChannelMessageSendReply(m.ChannelID, internal.ReminderHelperText, m.Reference())
 		return
 	}
 
 	reminder, err := time.ParseDuration(strings.TrimSpace(dates[1]))
 	if err != nil {
 		fmt.Println(err, reminder)
-		s.ChannelMessageSend(m.ChannelID, internal.WrongTimeFormat)
+		s.ChannelMessageSendReply(m.ChannelID, internal.WrongTimeFormat, m.Reference())
 		return
 	}
 
 	currentTime := time.Now()
 	remindeTime := currentTime.Add(reminder)
 
-	s.ChannelMessageSend(m.ChannelID, fmt.Sprintf(internal.AlertTimeSetText, remindeTime.Format(time.Kitchen)))
+	s.ChannelMessageSendReply(m.ChannelID, fmt.Sprintf(internal.AlertTimeSetText, remindeTime.Format(time.Kitchen)), m.Reference())
 
 	time.AfterFunc(reminder, func() {
-		s.ChannelMessageSend(m.ChannelID, fmt.Sprintf(internal.ReminderText, m.Author.ID, dates[2]))
+		s.ChannelMessageSendReply(m.ChannelID, fmt.Sprintf(internal.ReminderText, m.Author.ID, dates[2]), m.Reference())
 		return
 	})
 }
